@@ -1,0 +1,24 @@
+import streamlit as st
+import pandas as pd
+
+# Lectura de datos
+uploaded_file = st.file_uploader("Cargar archivo CSV", type="csv")
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.write("Datos cargados correctamente.")
+else:
+    st.warning("Por favor, cargue un archivo CSV.")
+    st.stop()
+
+# Resumen de datos
+st.header("Resumen de datos")
+st.write(df.describe())
+
+# Visualización de datos
+st.header("Visualización de datos")
+cols = st.multiselect("Seleccione las columnas para mostrar", df.columns)
+if cols:
+    table_html = df[cols].to_html(index=False)
+    st.write(table_html, unsafe_allow_html=True)
+else:
+    st.warning("Por favor, seleccione al menos una columna para mostrar.")
