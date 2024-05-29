@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+using namespace std;
+
+vector<string> calcularPotenciaLenguaje(const vector<char>& alfabeto, int potencia) {
+    vector<string> potenciaLenguaje;
+    potenciaLenguaje.push_back(""); 
+
+    for (int i = 1; i <= potencia; ++i) {
+        vector<string> nuevaPotencia;
+        for (const string& palabra : potenciaLenguaje) {
+            for (char c : alfabeto) {
+                nuevaPotencia.push_back(palabra + c);
+            }
+        }
+        potenciaLenguaje = nuevaPotencia;
+        if (i != 1) {
+            cout << endl; 
+        }
+        cout << "Potencia " << i << ": {"; 
+        for (int j = 0; j < potenciaLenguaje.size(); ++j) {
+            if (j != 0) {
+                cout << ",";
+            }
+            cout << potenciaLenguaje[j];
+        }
+        cout << "}";
+    }
+
+    return potenciaLenguaje;
+}
+
+int main() {
+    int n;
+    cout << "Ingrese el tamano del alfabeto: ";
+    cin >> n;
+
+    vector<char> alfabeto;
+    cout << "Ingrese los elementos del alfabeto espanol: ";
+    for (int i = 0; i < n; ++i) {
+        char c;
+        cin >> c;
+        alfabeto.push_back(c);
+    }
+
+    int potencia;
+    cout << "Ingrese la potencia del lenguaje: ";
+    cin >> potencia;
+
+    cout << "Las potencias son:\n";
+    vector<string> potenciaLenguaje = calcularPotenciaLenguaje(alfabeto, potencia);
+
+    return 0;
+}
