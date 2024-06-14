@@ -1,0 +1,60 @@
+import streamlit as st
+import pandas as pd
+
+class DataHandler:
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.data = None
+
+    def load_data(self, delimiter):
+        self.data = pd.read_csv(self.file_path, sep=delimiter)
+
+    def preview_data(self):
+        st.write(self.data.head(10))
+
+    def calculate_mean(self):
+        numerical_cols = self.data.select_dtypes(include=['number']).columns
+        for col in numerical_cols:
+            st.write(f"Media de {col}: {self.data[col].mean()}")
+
+    def calculate_median(self):
+        numerical_cols = self.data.select_dtypes(include=['number']).columns
+        for col in numerical_cols:
+            st.write(f"Mediana de {col}: {self.data[col].median()}")
+
+    def calculate_std_deviation(self):
+        numerical_cols = self.data.select_dtypes(include=['number']).columns
+        for col in numerical_cols:
+            st.write(f"Desviación Estándar de {col}: {self.data[col].std()}")
+
+# Interfaz Web con Streamlit
+def main():
+    st.title('APLICACIÓN DE ANÁLISIS ESTADÍSTICO CON POO')
+
+    uploaded_file = st.file_uploader("Cargar archivo CSV", type=['csv'])
+    
+    if uploaded_file is not None:
+        # Selección del delimitador
+        delimiter = st.radio("Selecciona el delimitador del archivo CSV", (',', ';'))
+        
+        # Cargar datos usando DataHandler
+        data_handler = DataHandler(uploaded_file)
+        data_handler.load_data(delimiter)
+
+        st.subheader('VISTA PREVIA DE DATOS')
+        data_handler.preview_data()
+
+        st.subheader('ANÁLISIS ESTADÍSTICO DETALLADO')
+        st.write("### Medias:")
+        data_handler.calculate_mean()
+
+        st.write("### Medianas:")
+        data_handler.calculate_median()
+
+        st.write("### Desviaciones Estándar:")
+        data_handler.calculate_std_deviation()
+    else:
+        st.write("Por favor, sube un archivo CSV para continuar.")
+
+if __name__ == '__main__':
+    main()
